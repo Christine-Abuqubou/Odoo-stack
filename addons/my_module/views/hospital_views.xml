@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <!-- 1. The Action (Tells Odoo what to open) -->
+        <record id="action_hospital_patient" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- 2. The Menu (The actual icon on your home screen) -->
+        <menuitem id="menu_hospital_root" name="Hospital" sequence="20"/>
+        <menuitem id="menu_hospital_patient" name="Patients" parent="menu_hospital_root" action="action_hospital_patient"/>
+    </data>
+</odoo>

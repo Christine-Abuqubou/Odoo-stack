@@ -1,0 +1,82 @@
+<odoo>
+  <data>
+    <!-- 1. FORM VIEW (THE SCREEN) -->
+    <record id="view_order_form_inherit" model="ir.ui.view">
+      <field name="name">sale.order.form.inherit</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='payment_term_id']" position="after">
+          <field name="test_custom_note" />
+          <field name="note_count" />
+        </xpath>
+      </field>
+    </record>
+
+    <!-- 2. LIST VIEW (THE BADGES) -->
+    <record id="view_order_tree_inherit" model="ir.ui.view">
+      <field name="inherit_id" ref="sale.view_quotation_tree" /> <!-- Use Quotation Tree for Odoo 17 -->
+      <field name="model">sale.order</field>
+      <field name="arch" type="xml">
+        <field name="partner_id" position="after">
+          <field name="test_custom_note" widget="badge"
+            decoration-info="test_custom_note == 'gift'"
+            decoration-danger="test_custom_note == 'urgent'" />
+        </field>
+      </field>
+    </record>
+
+    <!-- 3. KANBAN VIEW (THE TAGS) -->
+    <record id="view_sale_kanban_inherit" model="ir.ui.view">
+      <field name="inherit_id" ref="sale.view_sale_order_kanban" />
+      <field name="model">sale.order</field>
+      <field name="arch" type="xml">
+        <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="inside">
+          <field name="test_custom_note" widget="label_selection"
+            options="{'classes': {'urgent': 'danger', 'gift': 'success'}}" />
+        </xpath>
+      </field>
+    </record>
+
+    <!-- 4. PDF REPORT -->
+    <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+      <xpath expr="//div[hasclass('page')]" position="inside">
+        <div style="margin-top: 20px; border-top: 1px solid black;">
+          <strong>Shipping Note: </strong>
+          <span t-field="doc.test_custom_note" />
+          <br />
+          <strong>Note Length: </strong>
+          <span t-field="doc.note_count" />
+        </div>
+      </xpath>
+    </template>
+    <!-- 1. The Action: Adds "Shipping Label" to the Print menu -->
+    <record id="action_report_shipping_label" model="ir.actions.report">
+      <field name="name">Shipping Label</field>
+      <field name="model">sale.order</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">my_module.report_shipping_label_template</field>
+      <field name="binding_model_id" ref="sale.model_sale_order" />
+    </record>
+
+    <!-- 2. The Template: Designs what is printed -->
+    <template id="report_shipping_label_template">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+          <t t-call="web.external_layout">
+            <div class="page text-center">
+              <h1 style="border: 4px solid black; padding: 30px; margin-top: 50px;">
+                <span t-field="doc.test_custom_note" class="text-uppercase" />
+              </h1>
+              <div class="mt-4">
+                <h2>Order: <span t-field="doc.name" /></h2>
+                <h4>Customer: <span t-field="doc.partner_id.name" /></h4>
+              </div>
+            </div>
+          </t>
+        </t>
+      </t>
+    </template>
+
+  </data>
+</odoo>
