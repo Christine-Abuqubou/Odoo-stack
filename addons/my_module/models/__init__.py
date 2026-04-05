@@ -4,4 +4,4 @@ from . import models, student
 from . import hospital
 from . import School
 from . import Course
-
+from . import create_customer

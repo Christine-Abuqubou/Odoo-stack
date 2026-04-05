@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 1. تعريف واجهة النموذج (Form View) -->
+    <record id="view_external_sync_form" model="ir.ui.view">
+        <field name="name">external.sync.form</field>
+        <field name="model">external.sync</field>
+        <field name="arch" type="xml">
+            <form string="مزامنة العملاء">
+                <header>
+                    <!-- هذا هو الزر الذي سيشغل الكود الخاص بك -->
+                    <button name="action_create_external_customer" 
+                            string="إنشاء عميل خارجي الآن" 
+                            type="object" 
+                            class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 2. تعريف الأكشن (Action) لفتح الواجهة -->
+    <record id="action_external_sync" model="ir.actions.act_window">
+        <field name="name">مزامنة العملاء</field>
+        <field name="res_model">external.sync</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- 3. إضافة القائمة (Menu Item) في الشريط العلوي -->
+    <menuitem id="menu_external_sync_root" name="المزامنة الخارجية" sequence="10"/>
+    <menuitem id="menu_external_sync_action" 
+              name="إنشاء عميل" 
+              parent="menu_external_sync_root" 
+              action="action_external_sync"/>
+
+    
+</odoo>

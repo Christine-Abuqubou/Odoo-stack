@@ -28,6 +28,7 @@ Long description of module's purpose
         'views/templates.xml',
         'views/student_views.xml',
         'views/hospital_views.xml',
+        'views/sync_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
